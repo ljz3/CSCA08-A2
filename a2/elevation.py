@@ -38,7 +38,19 @@ def compare_elevations_within_row(elevation_map: List[List[int]], map_row: int,
 
     """
 
-    pass  # remove this line when you implement this function
+    less = 0
+    equal = 0
+    greater = 0
+
+    for elevation in elevation_map[map_row]:
+        if elevation < level:
+            less += 1
+        elif elevation > level:
+            greater += 1
+        else:
+            equal += 1
+    
+    return [less, equal, greater]
 
 
 def update_elevation(elevation_map: List[List[int]], start: List[int],
@@ -73,7 +85,14 @@ def update_elevation(elevation_map: List[List[int]], start: List[int],
 
     """
 
-    pass  # remove this line when you implement this function
+    counter_x = start[0]
+    for elevation in elevation_map[start[0]:stop[0]+1]:
+        counter_y = start[1]
+        for height in elevation[start[1]:stop[1]+1]:
+            height += delta
+            elevation_map[counter_x][counter_y] = height
+            counter_y += 1
+        counter_x += 1
 
 
 def get_average_elevation(elevation_map: List[List[int]]) -> float:
@@ -87,8 +106,11 @@ def get_average_elevation(elevation_map: List[List[int]]) -> float:
     >>> get_average_elevation(FOUR_BY_FOUR)
     3.8125
     """
-
-    pass  # remove this line when you implement this function
+    total_elevation = 0
+    for elevation in elevation_map:
+        for height in elevation:
+            total_elevation += height
+    return total_elevation/(len(elevation_map)) ** 2
 
 
 def find_peak(elevation_map: List[List[int]]) -> List[int]:
@@ -104,7 +126,20 @@ def find_peak(elevation_map: List[List[int]]) -> List[int]:
     [0, 3]
     """
 
-    pass  # remove this line when you implement this function
+    counter_x = 0
+    counter_x_peak = 0
+    counter_y_peak = 0
+    current_peak = 0
+    for elevation in elevation_map:
+        counter_y = 0
+        for height in elevation:
+            if height > current_peak:
+                current_peak = height
+                counter_x_peak = counter_x
+                counter_y_peak = counter_y
+            counter_y += 1
+        counter_x += 1
+    return[counter_x_peak, counter_y_peak]
 
 
 def is_sink(elevation_map: List[List[int]], cell: List[int]) -> bool:
@@ -128,7 +163,26 @@ def is_sink(elevation_map: List[List[int]], cell: List[int]) -> bool:
     False
     """
 
-    pass  # remove this line when you implement this function
+    top_edge = cell[0] == 0
+    bottom_edge = cell[0] == len(elevation_map) - 1
+    left_edge = cell[1] == 0
+    right_edge = cell[1] == len(elevation_map) - 1
+
+    if cell[0] >= len(elevation_map) or cell[1] >= len(elevation_map):
+        return False
+    if not top_edge and \
+        elevation_map[cell[0]][cell[1]] > elevation_map[cell[0]-1][cell[1]]:
+        return False
+    if not bottom_edge and \
+        elevation_map[cell[0]][cell[1]] > elevation_map[cell[0]+1][cell[1]]:
+        return False
+    if not left_edge and \
+        elevation_map[cell[0]][cell[1]] > elevation_map[cell[0]][cell[1]-1]:
+        return False
+    if not right_edge and \
+        elevation_map[cell[0]][cell[1]] > elevation_map[cell[0]][cell[1]+1]:
+        return False
+    return True
 
 
 def find_local_sink(elevation_map: List[List[int]],
