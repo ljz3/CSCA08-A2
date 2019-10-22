@@ -202,8 +202,27 @@ def find_local_sink(elevation_map: List[List[int]],
     >>> find_local_sink(UNIQUE_4X4, [2, 2])
     [2, 1]
     """
+    """
+    UNIQUE_3X3 = [[1, 2, 3],
+                 [9, 8, 7],
+                 [4, 5, 6]]
 
-    pass  # remove this line when you implement this function
+    UNIQUE_4X4 = [[10, 2, 3, 30],
+                 [9, 8, 7, 11],
+                 [4, 5, 6, 12],
+                 [13, 14, 15, 16]]
+    """
+
+    top_edge = cell[0] == 0
+    bottom_edge = cell[0] == len(elevation_map) - 1
+    left_edge = cell[1] == 0
+    right_edge = cell[1] == len(elevation_map) - 1
+
+    lowest_cell = []
+    lowest_cell_value = elevation_map[cell[0]][cell[1]]
+    if not top_edge:
+
+
 
 
 def can_hike_to(elevation_map: List[List[int]], start: List[int],
