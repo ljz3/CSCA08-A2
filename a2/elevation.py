@@ -163,25 +163,18 @@ def is_sink(elevation_map: List[List[int]], cell: List[int]) -> bool:
     False
     """
 
-    top_edge = cell[0] == 0
-    bottom_edge = cell[0] == len(elevation_map) - 1
-    left_edge = cell[1] == 0
-    right_edge = cell[1] == len(elevation_map) - 1
-
     if cell[0] >= len(elevation_map) or cell[1] >= len(elevation_map):
         return False
-    if not top_edge and \
-        elevation_map[cell[0]][cell[1]] > elevation_map[cell[0]-1][cell[1]]:
-        return False
-    if not bottom_edge and \
-        elevation_map[cell[0]][cell[1]] > elevation_map[cell[0]+1][cell[1]]:
-        return False
-    if not left_edge and \
-        elevation_map[cell[0]][cell[1]] > elevation_map[cell[0]][cell[1]-1]:
-        return False
-    if not right_edge and \
-        elevation_map[cell[0]][cell[1]] > elevation_map[cell[0]][cell[1]+1]:
-        return False
+    
+    for i in range(2):
+        for j in range(2):
+            if cell[0]-i >= 0 and cell[1]-j >= 0 and \
+            cell[0]+i < len(elevation_map) and cell[1]+j < len(elevation_map):
+                if elevation_map[cell[0]][cell[1]] > \
+                elevation_map[cell[0]-i][cell[1]-j] \
+                or elevation_map[cell[0]][cell[1]] > \
+                elevation_map[cell[0]+i][cell[1]+j]:
+                    return False
     return True
 
 
@@ -221,6 +214,7 @@ def find_local_sink(elevation_map: List[List[int]],
     lowest_cell = []
     lowest_cell_value = elevation_map[cell[0]][cell[1]]
     if not top_edge:
+        pass
 
 
 
@@ -279,3 +273,4 @@ def get_lower_resolution(elevation_map: List[List[int]]) -> List[List[int]]:
     """
 
     pass  # remove this line when you implement this function
+
