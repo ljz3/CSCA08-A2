@@ -206,36 +206,18 @@ def find_local_sink(elevation_map: List[List[int]],
                  [13, 14, 15, 16]]
     """
     min_values = [elevation_map[cell[0]][cell[1]], [cell[0], cell[1]]]
-
-    for i in range(2):
-        for j in range(2):
-
+    for i in [-1, 0, 1]:
+        for j in [-1, 0, 1]:
             if cell[0] + i < len(elevation_map) and \
-                cell[1] + j < len(elevation_map):
+            cell[1] + j < len(elevation_map) and \
+            cell[0] + i >= 0 and cell[1] + j >= 0:
                 if elevation_map[cell[0]+i][cell[1]+j] < min_values[0]:
-
                     min_values[0] = elevation_map[cell[0]+i][cell[1]+j]
                     min_values[1] = [cell[0]+i, cell[1]+j]
-
-            if cell[0] - i >= 0 and cell[1] - j >= 0:
-                if elevation_map[cell[0]-i][cell[1]-j] < min_values[0]:
-
-                    min_values[0] = elevation_map[cell[0]-i][cell[1]-j]
-                    min_values[1] = [cell[0]-i, cell[1]-j] 
-
-            if cell[0] + i < len(elevation_map) and cell[1] - j >= 0:
-                if elevation_map[cell[0]+i][cell[1]-j] < min_values[0]:
-
-                    min_values[0] = elevation_map[cell[0]+i][cell[1]-j]
-                    min_values[1] = [cell[0]+i, cell[1]-j] 
-
-            if cell[0] - i >= 0 and cell[1] + j < len(elevation_map):
-                if elevation_map[cell[0]-i][cell[1]+j] < min_values[0]:
-
-                    min_values[0] = elevation_map[cell[0]-i][cell[1]+j]
-                    min_values[1] = [cell[0]-i, cell[1]+j]                                                        
-    
     return min_values[1]
+
+print(find_local_sink(UNIQUE_4X4, [1, 3]))
+
 
 
 
@@ -290,7 +272,7 @@ map = [[1, 6, 5, 6],
        [2, 5, 6, 8],
        [7, 2, 8, 1],
        [4, 4, 7, 3]]
-print(can_hike_to(map, [3, 3], [2, 2], 100))
+# print(can_hike_to(map, [3, 3], [2, 2], 100))
 
 def get_lower_resolution(elevation_map: List[List[int]]) -> List[List[int]]:
     """Return a new elevation map, which is constructed from the values
