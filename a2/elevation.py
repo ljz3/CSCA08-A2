@@ -205,17 +205,37 @@ def find_local_sink(elevation_map: List[List[int]],
                  [4, 5, 6, 12],
                  [13, 14, 15, 16]]
     """
+    min_values = [elevation_map[cell[0]][cell[1]], [cell[0], cell[1]]]
 
-    top_edge = cell[0] == 0
-    bottom_edge = cell[0] == len(elevation_map) - 1
-    left_edge = cell[1] == 0
-    right_edge = cell[1] == len(elevation_map) - 1
+    for i in range(2):
+        for j in range(2):
 
-    lowest_cell = []
-    lowest_cell_value = elevation_map[cell[0]][cell[1]]
-    if not top_edge:
-        pass
+            if cell[0] + i < len(elevation_map) and \
+                cell[1] + j < len(elevation_map):
+                if elevation_map[cell[0]+i][cell[1]+j] < min_values[0]:
 
+                    min_values[0] = elevation_map[cell[0]+i][cell[1]+j]
+                    min_values[1] = [cell[0]+i, cell[1]+j]
+
+            if cell[0] - i >= 0 and cell[1] - j >= 0:
+                if elevation_map[cell[0]-i][cell[1]-j] < min_values[0]:
+
+                    min_values[0] = elevation_map[cell[0]-i][cell[1]-j]
+                    min_values[1] = [cell[0]-i, cell[1]-j] 
+
+            if cell[0] + i < len(elevation_map) and cell[1] - j >= 0:
+                if elevation_map[cell[0]+i][cell[1]-j] < min_values[0]:
+
+                    min_values[0] = elevation_map[cell[0]+i][cell[1]-j]
+                    min_values[1] = [cell[0]+i, cell[1]-j] 
+
+            if cell[0] - i >= 0 and cell[1] + j < len(elevation_map):
+                if elevation_map[cell[0]-i][cell[1]+j] < min_values[0]:
+
+                    min_values[0] = elevation_map[cell[0]-i][cell[1]+j]
+                    min_values[1] = [cell[0]-i, cell[1]+j]                                                        
+    
+    return min_values[1]
 
 
 
@@ -247,9 +267,30 @@ def can_hike_to(elevation_map: List[List[int]], start: List[int],
     False
 
     """
+    
+    while start != dest:
+        if start[0] > dest[0] and start[1] > dest[0]:
+            if abs(elevation_map[start[0]-1][start[1]] - elevation_map[start[0]][start[1]]) <= abs(elevation_map[start[0]][start[1]-1] - elevation_map[start[0]][start[1]]):
+                supplies -= abs(elevation_map[start[0]-1][start[1]] - elevation_map[start[0]][start[1]])
+                start[0] -= 1
+            else:
+                supplies -= abs(elevation_map[start[0]][start[1]-1] - elevation_map[start[0]][start[1]])
+                start[1] -= 1
+        elif start[0] == dest[0] and start[1] > dest[0]:
+            supplies -= abs(elevation_map[start[0]-1][start[1]] - elevation_map[start[0]][start[1]])
+            start[0] -= 1
+        elif start[0] > dest[0] and start[1] == dest[0]:
+            supplies -= abs(elevation_map[start[0]][start[1]-1] - elevation_map[start[0]][start[1]])            
+            start[1] -= 1
+        if supplies < 0:
+            return False
+    return True
 
-    pass  # remove this line when you implement this function
-
+map = [[1, 6, 5, 6],
+       [2, 5, 6, 8],
+       [7, 2, 8, 1],
+       [4, 4, 7, 3]]
+print(can_hike_to(map, [3, 3], [2, 2], 100))
 
 def get_lower_resolution(elevation_map: List[List[int]]) -> List[List[int]]:
     """Return a new elevation map, which is constructed from the values
