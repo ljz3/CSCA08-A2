@@ -294,10 +294,10 @@ def get_lower_resolution(elevation_map: List[List[int]]) -> List[List[int]]:
     """
     
     lower_res = []
-    i = 0
-    while i < range(len(elevation_map)):
-        totals = 0
-
+    
+    for y in range(len(elevation_map)//2):
+        for x in range(len(elevation_map)//2):
+            (elevation_map[0][0] + elevation_map[0][1] + elevation_map[1][0] + elevation_map[1][1])
 
     a = (elevation_map[0][0] + elevation_map[0][1] + elevation_map[1][0] + elevation_map[1][1]) // 4
     b = (elevation_map[0][2] + elevation_map[0][3] + elevation_map[1][2] + elevation_map[1][3]) // 4
