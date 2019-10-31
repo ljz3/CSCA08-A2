@@ -269,7 +269,7 @@ def can_hike_to(elevation_map: List[List[int]], start: List[int],
 
         if supplies < 0:
             return False
-            
+
     return True
 
 
@@ -291,8 +291,28 @@ def get_lower_resolution(elevation_map: List[List[int]]) -> List[List[int]]:
     ...      [4, 2, 1],
     ...      [3, 2, 3]])
     [[5, 1], [2, 3]]
-
     """
+    
+    lower_res = []
+    i = 0
+    while i < range(len(elevation_map)):
+        totals = 0
 
-    pass  # remove this line when you implement this function
 
+    a = (elevation_map[0][0] + elevation_map[0][1] + elevation_map[1][0] + elevation_map[1][1]) // 4
+    b = (elevation_map[0][2] + elevation_map[0][3] + elevation_map[1][2] + elevation_map[1][3]) // 4
+    c = (elevation_map[2][0] + elevation_map[2][1] + elevation_map[3][0] + elevation_map[3][1]) // 4
+    d = (elevation_map[2][0] + elevation_map[2][1] + elevation_map[3][2] + elevation_map[3][3]) // 4
+
+    return [[a,b],[c,d]]
+
+
+
+
+
+mapp = [[1, 6, 5, 6],
+        [2, 5, 6, 8],
+        [7, 2, 8, 1],
+        [4, 4, 7, 3]]
+print(mapp[0][2])
+print(get_lower_resolution(mapp))
