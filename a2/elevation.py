@@ -252,19 +252,23 @@ def can_hike_to(elevation_map: List[List[int]], start: List[int],
                 abs(elevation_map[start[0]][start[1]-1] - \
                 elevation_map[start[0]][start[1]]):
 
-                supplies -= abs(elevation_map[start[0]-1][start[1]] - elevation_map[start[0]][start[1]])
+                supplies -= abs(elevation_map[start[0]-1][start[1]] \
+                    - elevation_map[start[0]][start[1]])
                 start[0] -= 1
 
             else:
-                supplies -= abs(elevation_map[start[0]][start[1]-1] - elevation_map[start[0]][start[1]])
+                supplies -= abs(elevation_map[start[0]][start[1]-1] \
+                    - elevation_map[start[0]][start[1]])
                 start[1] -= 1
 
         elif start[0] == dest[0] and start[1] > dest[1]:
-            supplies -= abs(elevation_map[start[0]][start[1]-1] - elevation_map[start[0]][start[1]])
+            supplies -= abs(elevation_map[start[0]][start[1]-1] \
+                - elevation_map[start[0]][start[1]])
             start[1] -= 1
 
         elif start[0] > dest[0] and start[1] == dest[1]:
-            supplies -= abs(elevation_map[start[0]-1][start[1]] - elevation_map[start[0]][start[1]])            
+            supplies -= abs(elevation_map[start[0]-1][start[1]] \
+                - elevation_map[start[0]][start[1]])            
             start[0] -= 1
 
         if supplies < 0:
@@ -294,25 +298,35 @@ def get_lower_resolution(elevation_map: List[List[int]]) -> List[List[int]]:
     """
     
     lower_res = []
-    
-    for y in range(len(elevation_map)//2):
-        for x in range(len(elevation_map)//2):
-            (elevation_map[0][0] + elevation_map[0][1] + elevation_map[1][0] + elevation_map[1][1])
+    y = 0
+    x = 0
 
-    a = (elevation_map[0][0] + elevation_map[0][1] + elevation_map[1][0] + elevation_map[1][1]) // 4
-    b = (elevation_map[0][2] + elevation_map[0][3] + elevation_map[1][2] + elevation_map[1][3]) // 4
-    c = (elevation_map[2][0] + elevation_map[2][1] + elevation_map[3][0] + elevation_map[3][1]) // 4
-    d = (elevation_map[2][0] + elevation_map[2][1] + elevation_map[3][2] + elevation_map[3][3]) // 4
+    while y < len(elevation_map):
 
-    return [[a,b],[c,d]]
+        lower_res.append([])
+        x = 0
 
+        while x < len(elevation_map):
 
+            if(x + 1 >= len(elevation_map) and\
+                y + 1 >= len(elevation_map)):
+                lower_res[y // 2].append(elevation_map[y][x])
 
+            elif(x + 1 >= len(elevation_map)):
+                lower_res[y // 2].append((elevation_map[y][x] \
+                    + elevation_map[y + 1][x]) // 2)
 
+            elif(y + 1 >= len(elevation_map)):
+                lower_res[y // 2].append((elevation_map[y][x] \
+                    + elevation_map[y][x + 1]) // 2)
 
-mapp = [[1, 6, 5, 6],
-        [2, 5, 6, 8],
-        [7, 2, 8, 1],
-        [4, 4, 7, 3]]
-print(mapp[0][2])
-print(get_lower_resolution(mapp))
+            else:
+                lower_res[y // 2].append((elevation_map[y][x] \
+                    + elevation_map[y][x + 1] + elevation_map[y + 1][x] \
+                    + elevation_map[y + 1][x + 1]) // 4)
+
+            x += 2
+
+        y += 2
+
+    return lower_res
