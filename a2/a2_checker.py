@@ -37,7 +37,7 @@ class CheckTest(unittest.TestCase):
         """ Function find_peak"""
 
         self._returns_list_of_n_ints(elevation.find_peak,
-                                     [[[1, 2], [2, 1]]],
+                                     [[[1, 2], [4, 3]]],
                                      2)
 
     def test04IsSink(self):
