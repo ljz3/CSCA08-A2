@@ -22,6 +22,7 @@ UNIQUE_4X4 = [[10, 2, 3, 30],
               [13, 14, 15, 16]]
 
 
+
 def compare_elevations_within_row(elevation_map: List[List[int]], map_row: int,
                                   level: int) -> List[int]:
     """Return a new list containing the three counts: the number of
@@ -43,10 +44,13 @@ def compare_elevations_within_row(elevation_map: List[List[int]], map_row: int,
     greater = 0
 
     for elevation in elevation_map[map_row]:
+
         if elevation < level:
             less += 1
+
         elif elevation > level:
             greater += 1
+
         else:
             equal += 1
     
@@ -86,12 +90,17 @@ def update_elevation(elevation_map: List[List[int]], start: List[int],
     """
 
     counter_x = start[0]
-    for elevation in elevation_map[start[0]:stop[0]+1]:
+
+    for elevation in elevation_map[start[0]:stop[0] + 1]:
+
         counter_y = start[1]
-        for height in elevation[start[1]:stop[1]+1]:
+
+        for height in elevation[start[1]:stop[1] + 1]:
+
             height += delta
             elevation_map[counter_x][counter_y] = height
             counter_y += 1
+
         counter_x += 1
 
 
@@ -107,10 +116,14 @@ def get_average_elevation(elevation_map: List[List[int]]) -> float:
     3.8125
     """
     total_elevation = 0
+
     for elevation in elevation_map:
+
         for height in elevation:
+
             total_elevation += height
-    return total_elevation/(len(elevation_map)) ** 2
+
+    return total_elevation / (len(elevation_map)) ** 2
 
 
 def find_peak(elevation_map: List[List[int]]) -> List[int]:
@@ -130,15 +143,23 @@ def find_peak(elevation_map: List[List[int]]) -> List[int]:
     counter_x_peak = 0
     counter_y_peak = 0
     current_peak = 0
+
     for elevation in elevation_map:
+
         counter_y = 0
+
         for height in elevation:
+
             if height > current_peak:
+
                 current_peak = height
                 counter_x_peak = counter_x
                 counter_y_peak = counter_y
+
             counter_y += 1
+
         counter_x += 1
+
     return[counter_x_peak, counter_y_peak]
 
 
@@ -167,14 +188,20 @@ def is_sink(elevation_map: List[List[int]], cell: List[int]) -> bool:
         return False
     
     for i in range(2):
+
         for j in range(2):
-            if cell[0]-i >= 0 and cell[1]-j >= 0 and \
-            cell[0]+i < len(elevation_map) and cell[1]+j < len(elevation_map):
+
+            if cell[0] - i >= 0 and cell[1] - j >= 0 and \
+            cell[0] + i < len(elevation_map) and \
+            cell[1] + j < len(elevation_map):
+
                 if elevation_map[cell[0]][cell[1]] > \
-                elevation_map[cell[0]-i][cell[1]-j] \
+                elevation_map[cell[0] - i][cell[1] - j] \
                 or elevation_map[cell[0]][cell[1]] > \
-                elevation_map[cell[0]+i][cell[1]+j]:
+                elevation_map[cell[0] + i][cell[1] + j]:
+
                     return False
+
     return True
 
 
@@ -197,21 +224,21 @@ def find_local_sink(elevation_map: List[List[int]],
     """
 
     min_values = [elevation_map[cell[0]][cell[1]], [cell[0], cell[1]]]
+
     for i in [-1, 0, 1]:
+
         for j in [-1, 0, 1]:
 
             if cell[0] + i < len(elevation_map) and \
             cell[1] + j < len(elevation_map) and \
             cell[0] + i >= 0 and cell[1] + j >= 0:
 
-                if elevation_map[cell[0]+i][cell[1]+j] < min_values[0]:
+                if elevation_map[cell[0] + i][cell[1] + j] < min_values[0]:
 
-                    min_values[0] = elevation_map[cell[0]+i][cell[1]+j]
-                    min_values[1] = [cell[0]+i, cell[1]+j]
+                    min_values[0] = elevation_map[cell[0] + i][cell[1] + j]
+                    min_values[1] = [cell[0] + i, cell[1] + j]
 
     return min_values[1]
-
-
 
 
 def can_hike_to(elevation_map: List[List[int]], start: List[int],
@@ -247,27 +274,27 @@ def can_hike_to(elevation_map: List[List[int]], start: List[int],
 
         if start[0] > dest[0] and start[1] > dest[0]:
 
-            if abs(elevation_map[start[0]-1][start[1]] - \
+            if abs(elevation_map[start[0] - 1][start[1]] - \
                 elevation_map[start[0]][start[1]]) <= \
-                abs(elevation_map[start[0]][start[1]-1] - \
+                abs(elevation_map[start[0]][start[1] - 1] - \
                 elevation_map[start[0]][start[1]]):
 
-                supplies -= abs(elevation_map[start[0]-1][start[1]] \
+                supplies -= abs(elevation_map[start[0] - 1][start[1]] \
                     - elevation_map[start[0]][start[1]])
                 start[0] -= 1
 
             else:
-                supplies -= abs(elevation_map[start[0]][start[1]-1] \
+                supplies -= abs(elevation_map[start[0]][start[1] - 1] \
                     - elevation_map[start[0]][start[1]])
                 start[1] -= 1
 
         elif start[0] == dest[0] and start[1] > dest[1]:
-            supplies -= abs(elevation_map[start[0]][start[1]-1] \
+            supplies -= abs(elevation_map[start[0]][start[1] - 1] \
                 - elevation_map[start[0]][start[1]])
             start[1] -= 1
 
         elif start[0] > dest[0] and start[1] == dest[1]:
-            supplies -= abs(elevation_map[start[0]-1][start[1]] \
+            supplies -= abs(elevation_map[start[0] - 1][start[1]] \
                 - elevation_map[start[0]][start[1]])            
             start[0] -= 1
 
@@ -314,16 +341,16 @@ def get_lower_resolution(elevation_map: List[List[int]]) -> List[List[int]]:
 
             elif(x + 1 >= len(elevation_map)):
                 lower_res[y // 2].append((elevation_map[y][x] \
-                    + elevation_map[y + 1][x]) // 2)
+                + elevation_map[y + 1][x]) // 2)
 
             elif(y + 1 >= len(elevation_map)):
                 lower_res[y // 2].append((elevation_map[y][x] \
-                    + elevation_map[y][x + 1]) // 2)
+                + elevation_map[y][x + 1]) // 2)
 
             else:
                 lower_res[y // 2].append((elevation_map[y][x] \
-                    + elevation_map[y][x + 1] + elevation_map[y + 1][x] \
-                    + elevation_map[y + 1][x + 1]) // 4)
+                + elevation_map[y][x + 1] + elevation_map[y + 1][x] \
+                + elevation_map[y + 1][x + 1]) // 4)
 
             x += 2
 
